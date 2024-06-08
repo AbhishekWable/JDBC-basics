@@ -14,15 +14,20 @@ public class Main {
 
             Statement statement= connection.createStatement();
 
+            String create="create table teacher(id int primary key,name varchar(50),address varchar(100))";
+            statement.executeUpdate(create);
+            System.out.println("table created successfully..");
+
+
             //add recode to table
-            String sql="insert into student(id,name,address) values(?,?,?)";
+            String sql="insert into teacher(id,name,address) values(?,?,?)";
             PreparedStatement pst=statement.getConnection().prepareStatement(sql);
             pst.setInt(1,4);
-            pst.setString(2,"Shubham");
-            pst.setString(3,"Pimpri");
+            pst.setString(2,"Dinesh");
+            pst.setString(3,"Hinjewadi");
             int status=pst.executeUpdate();
             if(status==1){
-                System.out.println("recode updated..");
+                System.out.println("record added..");
             }else{
                 System.out.println("error");
             }
@@ -30,16 +35,22 @@ public class Main {
 
 
             //show all records from table
-            ResultSet resultSet= statement.executeQuery("select * from student");
+            String select="select * from teacher";
+            PreparedStatement selectPst= connection.prepareStatement(select);
+            ResultSet resultSet= statement.executeQuery(select);
             while(resultSet.next()){
-                System.out.println(resultSet.getInt(1)+" "+ resultSet.getString(2)+ " "+ resultSet.getString(3));
+            int id=resultSet.getInt(1);
+            String name=resultSet.getString(2);
+            String address= resultSet.getNString(3);
+                System.out.println(id +". " + name + " " + address);
+
             }
             //update record from table
 
-            String update="update student set address=? where id=?";
+            String update="update teacher set address=? where id=?";
             PreparedStatement preparedStatement=connection.prepareStatement(update);
-            preparedStatement.setString(1,"kopargaon");
-            preparedStatement.setInt(2,1);
+            preparedStatement.setString(1,"Pune");
+            preparedStatement.setInt(2,2);
             int updateStatus= preparedStatement.executeUpdate();
             if(updateStatus==1){
                 System.out.println("data updated");
@@ -50,9 +61,9 @@ public class Main {
 
             //delete record from table
 
-            String deleteSql = "delete from Student where name = ?";
+            String deleteSql = "delete from teacher where name = ?";
             PreparedStatement deletePst = connection.prepareStatement(deleteSql);
-            deletePst.setString(1, "Shubham");
+            deletePst.setString(1, "Dinesh");
             int deleteStatus = deletePst.executeUpdate();
             if (deleteStatus == 1) {
                 System.out.println("Record deleted.");
